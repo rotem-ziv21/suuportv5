@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('home') }}">דף הבית</a></li>
+                    <li class="breadcrumb-item active">קריאה מספר {{ ticket.ticket_number }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="mb-0">{{ ticket.subject }}</h2>
+                        <span class="badge {% if ticket.status == 'פתוח' %}bg-danger
+                                         {% elif ticket.status == 'בטיפול' %}bg-warning
+                                         {% else %}bg-success{% endif %} fs-6">
+                            {{ ticket.status }}
+                        </span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>תיאור הבעיה:</h5>
+                        <p class="mb-0">{{ ticket.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">פרטי הקריאה</h3>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">מספר קריאה:</dt>
+                        <dd class="col-sm-7">{{ ticket.ticket_number }}</dd>
+                        
+                        <dt class="col-sm-5">תאריך פתיחה:</dt>
+                        <dd class="col-sm-7">{{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</dd>
+                        
+                        <dt class="col-sm-5">סטטוס:</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge {% if ticket.status == 'פתוח' %}bg-danger
+                                             {% elif ticket.status == 'בטיפול' %}bg-warning
+                                             {% else %}bg-success{% endif %}">
+                                {{ ticket.status }}
+                            </span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

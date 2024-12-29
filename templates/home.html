@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    {% if current_user.is_authenticated %}
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1>ברוך הבא, {{ current_user.email }}</h1>
+                    <a href="{{ url_for('new_ticket') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> פתיחת קריאה חדשה
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- קריאות פתוחות -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h3 class="mb-0">קריאות פתוחות</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if open_tickets %}
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>מספר קריאה</th>
+                                            <th>נושא</th>
+                                            <th>תאריך פתיחה</th>
+                                            <th>פעולות</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ticket in open_tickets %}
+                                            <tr>
+                                                <td>{{ ticket.ticket_number }}</td>
+                                                <td>{{ ticket.subject }}</td>
+                                                <td>{{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                                                <td>
+                                                    <a href="{{ url_for('view_ticket', ticket_id=ticket.id) }}" class="btn btn-sm btn-info">צפה בפרטים</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-center mb-0">אין קריאות פתוחות כרגע</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- קריאות בטיפול -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h3 class="mb-0">קריאות בטיפול</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if in_progress_tickets %}
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>מספר קריאה</th>
+                                            <th>נושא</th>
+                                            <th>תאריך פתיחה</th>
+                                            <th>פעולות</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ticket in in_progress_tickets %}
+                                            <tr>
+                                                <td>{{ ticket.ticket_number }}</td>
+                                                <td>{{ ticket.subject }}</td>
+                                                <td>{{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                                                <td>
+                                                    <a href="{{ url_for('view_ticket', ticket_id=ticket.id) }}" class="btn btn-sm btn-info">צפה בפרטים</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-center mb-0">אין קריאות בטיפול כרגע</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- קריאות סגורות -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h3 class="mb-0">קריאות שטופלו לאחרונה</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if closed_tickets %}
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>מספר קריאה</th>
+                                            <th>נושא</th>
+                                            <th>תאריך פתיחה</th>
+                                            <th>פעולות</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ticket in closed_tickets %}
+                                            <tr>
+                                                <td>{{ ticket.ticket_number }}</td>
+                                                <td>{{ ticket.subject }}</td>
+                                                <td>{{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                                                <td>
+                                                    <a href="{{ url_for('view_ticket', ticket_id=ticket.id) }}" class="btn btn-sm btn-info">צפה בפרטים</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-center mb-0">אין קריאות סגורות</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <h1 class="display-4 mb-4">ברוכים הבאים למערכת קריאות השירות</h1>
+            <p class="lead mb-4">על מנת לפתוח קריאת שירות או לצפות בקריאות קיימות, אנא התחברו למערכת</p>
+            <div>
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-3">התחברות</a>
+                <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">הרשמה</a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
